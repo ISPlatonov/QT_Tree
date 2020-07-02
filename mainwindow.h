@@ -31,11 +31,15 @@ public:
 
 //private:
     Ui::MainWindow *ui;
-    void addChild(QTreeWidgetItem *par, /*int row,*/ empl* empl);
+    void showChild(QTreeWidgetItem *par, empl* empl);
     void setTreeView(Ui::MainWindow *ui, QVector<department*>& deps);
-    void MainWindow::addDepartment(Ui::MainWindow *ui, /*int row,*/ department* dep);
-    void MainWindow::clearTreeWidget(Ui::MainWindow *ui);
+    void showDepartment(Ui::MainWindow *ui, department* dep);
+    void clearTreeWidget(Ui::MainWindow *ui);
+    void addDepartment(QVector<department*>& deps, QString& name);
+    void addChild(department* dep, QString name, QString sal, QString func);
 private slots:
     void on_openFile_triggered();
+    void on_but_add_dep_clicked();
+    void on_but_add_empl_clicked();
 };
 #endif // MAINWINDOW_H

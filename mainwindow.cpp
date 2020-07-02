@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "w_add_empl.h"
 
-void MainWindow::addChild(QTreeWidgetItem *par, empl* empl)
+void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
     QTreeWidgetItem *tree = new QTreeWidgetItem();
 
@@ -12,7 +13,7 @@ void MainWindow::addChild(QTreeWidgetItem *par, empl* empl)
     par->addChild(tree);
 }
 
-void MainWindow::addDepartment(Ui::MainWindow *ui, department* dep)
+void MainWindow::showDepartment(Ui::MainWindow *ui, department* dep)
 {
     QTreeWidgetItem *tree = new QTreeWidgetItem(ui->treeWidget);
 
@@ -23,37 +24,46 @@ void MainWindow::addDepartment(Ui::MainWindow *ui, department* dep)
 
     size_t len = dep->empls.count();
     for (size_t j = 0; j < len; ++j)
-        addChild(tree, dep->empls[j]);
+        showChild(tree, dep->empls[j]);
+}
+
+void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
+{
+    auto *dep = new department;
+    dep->name = name;
+    deps.push_back(dep);
+
+    showDepartment(ui, dep);
+}
+
+void MainWindow::addChild(department *dep, QString name, QString sal, QString func)
+{
+    empl *empl = new struct empl;
+    empl->sal = sal;
+    empl->func = func;
+    empl->name = name;
+    dep->empls.push_back(empl);
+
+    //надо подумать с выводом
+    auto item = ui->treeWidget->findItems(dep->name, Qt::MatchContains, 0)[0];
+    showChild(item, empl);
 }
 
 void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
 {
     while (ui->treeWidget->topLevelItemCount() > 0)
         ui->treeWidget->takeTopLevelItem(0);
-    //deps.clear();
 }
 
 void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
 {
-    //ui->treeWidget->setColumnCount(3);
-
-    /*QTreeWidgetItem *tree = new QTreeWidgetItem(ui->treeWidget);
-
-    tree->setText(0, "Название");
-    tree->setText(1, "Кол-во сотрудников");
-    tree->setText(2, "Ср. зарплата");
-
-    ui->treeWidget->setHeaderItem(tree);*/
-
     for (auto dep : deps)
-        addDepartment(ui, dep);
+        showDepartment(ui, dep);
 }
 
-MainWindow::MainWindow(/*QVector<department*>& deps,*/ QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    //setTreeView(ui, deps);
 }
 
 MainWindow::~MainWindow()
@@ -67,6 +77,18 @@ void MainWindow::on_openFile_triggered()
     DataXML data;
     Path path;
     clearTreeWidget(ui);
-    data.Open(/*"C:/file.xml"*/path.getPath(), deps);
+    data.Open(path.getPath(), deps);
     setTreeView(ui, deps);
+}
+
+void MainWindow::on_but_add_dep_clicked()
+{
+    QString txt = ui->line_add_dep->text();
+    addDepartment(deps, txt);
+}
+
+void MainWindow::on_but_add_empl_clicked()
+{
+    w_add_empl* add_w = new w_add_empl(nullptr);
+    add_w->show();
 }

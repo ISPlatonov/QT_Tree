@@ -19,16 +19,19 @@ SOURCES += \
     dataxml.cpp \
     main.cpp \
     mainwindow.cpp \
-    path.cpp
+    path.cpp \
+    w_add_empl.cpp
 
 HEADERS += \
     dataxml.h \
     mainwindow.h \
     path.h \
-    structdep.h
+    structdep.h \
+    w_add_empl.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    w_add_empl.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
+    <width>616</width>
     <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Список подразделений</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
@@ -30,7 +30,7 @@
    <widget class="QLineEdit" name="line_add_dep">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>190</x>
       <y>10</y>
       <width>211</width>
       <height>21</height>
@@ -76,7 +76,7 @@
     </attribute>
     <column>
      <property name="text">
-      <string notr="true">Название</string>
+      <string>Название</string>
      </property>
     </column>
     <column>
@@ -90,13 +90,26 @@
      </property>
     </column>
    </widget>
+   <widget class="QPushButton" name="but_add_empl">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>80</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Добавить сотрудника</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>624</width>
+     <width>616</width>
      <height>20</height>
     </rect>
    </property>
