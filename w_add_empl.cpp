@@ -8,14 +8,21 @@ void w_add_empl::addEmpl(department* dep)
     empl->sal = ui->line_edit_sal->text();
     empl->func = ui->line_edit_func->text();
     dep->empls.push_back(empl);
+
+    emit sendDep(dep);
 }
 
-w_add_empl::w_add_empl(department* _dep, QDialog *parent) : QWidget(parent), ui(new Ui::w_add_empl)
+w_add_empl::w_add_empl(department* _dep, QWidget *parent) : QDialog(parent), ui(new Ui::w_add_empl)
 {
     ui->setupUi(this);
     dep = _dep;
-    //setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
+
+/*department* w_add_empl::sendDep()
+{
+    return dep;
+}*/
 
 w_add_empl::~w_add_empl()
 {

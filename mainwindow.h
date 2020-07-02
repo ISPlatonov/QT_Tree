@@ -37,6 +37,10 @@ public:
     void clearTreeWidget(Ui::MainWindow *ui);
     void addDepartment(QVector<department*>& deps, QString& name);
     void addChild(department* dep, QString name, QString sal, QString func);
+
+public slots:
+    void getChDep(department* dep);
+
 private slots:
     void on_openFile_triggered();
     void on_but_add_dep_clicked();

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "w_add_empl.h"
+#include <QObject>
 
 void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
@@ -89,6 +90,36 @@ void MainWindow::on_but_add_dep_clicked()
 
 void MainWindow::on_but_add_empl_clicked()
 {
-    w_add_empl* add_w = new w_add_empl(nullptr);
-    add_w->show();
+    if (ui->treeWidget->selectedItems().count() == 0)
+    {
+        return;
+    }
+    else
+    {
+        //qDebug() << ui->treeWidget->selectedItems()[0]->parent()->text(0)
+        QString name = ui->treeWidget->selectedItems()[0]->text(0);
+        department* dep = nullptr;
+        for (auto d : deps)
+            if (d->name == name)
+                dep = d;
+        if (dep == nullptr)
+        {
+            qDebug() << "stop";
+            return;
+        }
+        w_add_empl* add_w = new w_add_empl(dep, this);
+        QObject::connect(add_w, SIGNAL(sendDep(department*)), this, SLOT(getChDep(department*)));
+        add_w->setWindowFlag(Qt::WindowStaysOnTopHint);
+        add_w->show();
+        add_w->exec();
+    }
+}
+
+void MainWindow::getChDep(department* dep)
+{
+    for (auto d : deps)
+        if (d->name == dep->name)
+            *d = *dep;
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
 }
