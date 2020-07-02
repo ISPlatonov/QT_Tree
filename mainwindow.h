@@ -34,7 +34,7 @@ public:
     void addChild(QTreeWidgetItem *par, /*int row,*/ empl* empl);
     void setTreeView(Ui::MainWindow *ui, QVector<department*>& deps);
     void MainWindow::addDepartment(Ui::MainWindow *ui, /*int row,*/ department* dep);
-    void MainWindow::clearTree(Ui::MainWindow *ui);
+    void MainWindow::clearTreeWidget(Ui::MainWindow *ui);
 private slots:
     void on_openFile_triggered();
 };

@@ -26,10 +26,11 @@ void MainWindow::addDepartment(Ui::MainWindow *ui, department* dep)
         addChild(tree, dep->empls[j]);
 }
 
-void MainWindow::clearTree(Ui::MainWindow *ui)
+void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
 {
     while (ui->treeWidget->topLevelItemCount() > 0)
         ui->treeWidget->takeTopLevelItem(0);
+    //deps.clear();
 }
 
 void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
@@ -44,8 +45,6 @@ void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
 
     ui->treeWidget->setHeaderItem(tree);*/
 
-    clearTree(ui);
-
     for (auto dep : deps)
         addDepartment(ui, dep);
 }
@@ -59,6 +58,7 @@ MainWindow::MainWindow(/*QVector<department*>& deps,*/ QWidget *parent) : QMainW
 
 MainWindow::~MainWindow()
 {
+    deps.~QVector();
     delete ui;
 }
 
@@ -66,6 +66,7 @@ void MainWindow::on_openFile_triggered()
 {
     DataXML data;
     Path path;
+    clearTreeWidget(ui);
     data.Open(/*"C:/file.xml"*/path.getPath(), deps);
     setTreeView(ui, deps);
 }

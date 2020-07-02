@@ -72,6 +72,8 @@ void DataXML::Open(QString path, QVector<department*>& deps)
         file.close();
     }
 
+    deps.clear();
+
     //get the root element
     QDomElement root = doc.firstChildElement();
 

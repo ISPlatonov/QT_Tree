@@ -26,7 +26,14 @@ struct department
             v += empl->sal.toInt();
             ++n;
         }
+        if(!n)
+            return 0;
         return v/n;
+    }
+    void clear()
+    {
+        empls.clear();
+        name = "";
     }
 };
 
