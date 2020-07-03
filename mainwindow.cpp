@@ -30,6 +30,17 @@ void MainWindow::showDepartment(Ui::MainWindow *ui, department* dep)
 
 void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
 {
+    if (name.isEmpty())
+    {
+        ui->statusbar->showMessage("Введите название", 5000);
+        return;
+    }
+    for (auto* d : deps)
+        if (d->name == name)
+        {
+            ui->statusbar->showMessage("Подразделение уже существует", 5000);
+            return;
+        }
     auto *dep = new department;
     dep->name = name;
     deps.push_back(dep);
@@ -56,6 +67,48 @@ void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
 {
     while (ui->treeWidget->topLevelItemCount() > 0)
         ui->treeWidget->takeTopLevelItem(0);
+}
+
+void MainWindow::delDep(Ui::MainWindow *ui, QString name)
+{
+    bool f = 0;
+    for (uint16_t i = 0; i < deps.length(); ++i)
+        if (deps[i]->name == name)
+        {
+            f = true;
+            deps.remove(i);
+            break;
+        }
+    if (!f)
+    {
+        ui->statusbar->showMessage("Подразделение не выбрано", 5000);
+        return;
+    }
+}
+
+void MainWindow::delEmpl(Ui::MainWindow *ui, QString name, QString func, QString salary)
+{
+    if (ui->treeWidget->selectedItems()[0]->parent() == nullptr)
+    {
+        ui->statusbar->showMessage("Выберите именно сотрудника", 5000);
+        return;
+    }
+    QString dep_name = ui->treeWidget->selectedItems()[0]->parent()->text(0);
+    department* dep = nullptr;
+    for (uint16_t i = 0; i < deps.length(); ++i)
+        if (deps[i]->name == dep_name)
+        {
+            dep = deps[i];
+            break;
+        }
+    if (dep == nullptr)
+    {
+        ui->statusbar->showMessage("Сотрудник не выбран", 5000);
+        return;
+    }
+    for (uint16_t i = 0; i < dep->empls.length(); ++i)
+        if (dep->empls[i]->fio() == name && dep->empls[i]->sal == salary && dep->empls[i]->func == func)
+            dep->empls.remove(i);
 }
 
 void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
@@ -123,6 +176,30 @@ void MainWindow::getChDep(department* dep)
     for (auto d : deps)
         if (d->name == dep->name)
             *d = *dep;
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}
+
+void MainWindow::on_but_del_dep_clicked()
+{
+    if (ui->treeWidget->selectedItems().count() == 0)
+    {
+        ui->statusbar->showMessage("Ничего не выбрано", 5000);
+        return;
+    }
+    delDep(ui, ui->treeWidget->selectedItems()[0]->text(0));
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}
+
+void MainWindow::on_but_del_empl_clicked()
+{
+    if (ui->treeWidget->selectedItems().count() == 0)
+    {
+        ui->statusbar->showMessage("Ничего не выбрано", 5000);
+        return;
+    }
+    delEmpl(ui, ui->treeWidget->selectedItems()[0]->text(0), ui->treeWidget->selectedItems()[0]->text(1), ui->treeWidget->selectedItems()[0]->text(2));
     clearTreeWidget(ui);
     setTreeView(ui, deps);
 }

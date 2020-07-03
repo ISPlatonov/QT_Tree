@@ -23,11 +23,6 @@ w_add_empl::w_add_empl(department* _dep, QWidget *parent) : QDialog(parent), ui(
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
-/*department* w_add_empl::sendDep()
-{
-    return dep;
-}*/
-
 w_add_empl::~w_add_empl()
 {
     delete ui;
