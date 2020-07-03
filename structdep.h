@@ -3,16 +3,21 @@
 
 #include <QVariant>
 #include <QVector>
-#include <stdio.h>
+//#include <stdio.h>
 
 struct empl
 {
-    QString name, sal, func;
+    QString name, surname, midname, sal, func;
+    QString fio()
+    {
+        QString fio = surname + ' ' + name + ' ' + midname;
+        return fio;
+    }
 };
 
 struct department
 {
-    QString name;//, num, midsal;
+    QString name;
     QVector<empl*> empls;
     int num()
     {

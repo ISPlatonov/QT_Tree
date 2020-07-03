@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDialog>
+#include <QValidator>
 #include "structdep.h"
 
 namespace Ui {

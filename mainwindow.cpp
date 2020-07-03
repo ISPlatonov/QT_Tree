@@ -7,7 +7,7 @@ void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
     QTreeWidgetItem *tree = new QTreeWidgetItem();
 
-    tree->setData(0, 0, empl->name);
+    tree->setData(0, 0, empl->fio());
     tree->setData(1, 0, empl->func);
     tree->setData(2, 0, empl->sal);
 
@@ -37,12 +37,14 @@ void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
     showDepartment(ui, dep);
 }
 
-void MainWindow::addChild(department *dep, QString name, QString sal, QString func)
+void MainWindow::addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func)
 {
     empl *empl = new struct empl;
     empl->sal = sal;
     empl->func = func;
+    empl->surname = surname;
     empl->name = name;
+    empl->midname = midname;
     dep->empls.push_back(empl);
 
     //надо подумать с выводом
@@ -92,6 +94,7 @@ void MainWindow::on_but_add_empl_clicked()
 {
     if (ui->treeWidget->selectedItems().count() == 0)
     {
+        ui->statusbar->showMessage("Подразделение не выбрано", 5000);
         return;
     }
     else
@@ -104,7 +107,7 @@ void MainWindow::on_but_add_empl_clicked()
                 dep = d;
         if (dep == nullptr)
         {
-            qDebug() << "stop";
+            ui->statusbar->showMessage("Нужно выбрать именно подразделение", 5000);
             return;
         }
         w_add_empl* add_w = new w_add_empl(dep, this);

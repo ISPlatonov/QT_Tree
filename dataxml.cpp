@@ -6,7 +6,7 @@ void DataXML::ListElements(QDomElement root, QVector<department*>& deps, QString
 {
     QDomNodeList items = root.elementsByTagName(tagname);
 
-    for (size_t i = 0; i < items.count(); ++i)
+    for (uint16_t i = 0; i < items.count(); ++i)
     {
         QDomNode itemnode = items.at(i);
 
@@ -18,17 +18,16 @@ void DataXML::ListElements(QDomElement root, QVector<department*>& deps, QString
             {
                 QDomNodeList empl = itemele.childNodes();
 
-                QString fio[3];
                 struct empl* empl_st = new struct empl;
-                for (size_t j = 0; j < empl.count(); ++j)
+                for (uint16_t j = 0; j < empl.count(); ++j)
                 {
                     QDomElement empl_el = empl.at(j).toElement();
                     if (empl_el.tagName() == "surname")
-                        fio[0] = empl_el.text();
+                        empl_st->surname = empl_el.text();
                     else if (empl_el.tagName() == "name")
-                        fio[1] = empl_el.text();
+                        empl_st->name = empl_el.text();
                     else if (empl_el.tagName() == "middleName")
-                        fio[2] = empl_el.text();
+                        empl_st->midname = empl_el.text();
                     else if (empl_el.tagName() == "salary")
                         empl_st->sal = empl_el.text();
                     else if (empl_el.tagName() == "function")
@@ -36,7 +35,6 @@ void DataXML::ListElements(QDomElement root, QVector<department*>& deps, QString
                     else
                         qDebug() << "Unexpected tag";
                 }
-                empl_st->name = fio[0] + ' ' + fio[1] + ' ' + fio[2];
                 deps.back()->empls.push_back(empl_st);
             }
             else

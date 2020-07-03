@@ -4,7 +4,9 @@
 void w_add_empl::addEmpl(department* dep)
 {
     auto *empl = new struct empl;
+    empl->surname = ui->line_edit_surname->text();
     empl->name = ui->line_edit_name->text();
+    empl->midname = ui->line_edit_midname->text();
     empl->sal = ui->line_edit_sal->text();
     empl->func = ui->line_edit_func->text();
     dep->empls.push_back(empl);
@@ -16,6 +18,8 @@ w_add_empl::w_add_empl(department* _dep, QWidget *parent) : QDialog(parent), ui(
 {
     ui->setupUi(this);
     dep = _dep;
+    auto* intVal = new QIntValidator;
+    ui->line_edit_sal->setValidator(intVal);
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

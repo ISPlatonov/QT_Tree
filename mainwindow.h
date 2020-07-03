@@ -36,7 +36,7 @@ public:
     void showDepartment(Ui::MainWindow *ui, department* dep);
     void clearTreeWidget(Ui::MainWindow *ui);
     void addDepartment(QVector<department*>& deps, QString& name);
-    void addChild(department* dep, QString name, QString sal, QString func);
+    void addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func);
 
 public slots:
     void getChDep(department* dep);
