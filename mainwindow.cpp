@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "w_add_empl.h"
-#include <QObject>
 
 void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
@@ -24,7 +22,7 @@ void MainWindow::showDepartment(Ui::MainWindow *ui, department* dep)
     ui->treeWidget->addTopLevelItem(tree);
 
     size_t len = dep->empls.count();
-    for (size_t j = 0; j < len; ++j)
+    for (uint16_t j = 0; j < len; ++j)
         showChild(tree, dep->empls[j]);
 }
 

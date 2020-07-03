@@ -12,6 +12,8 @@
 #include <QFile>
 #include <QtWidgets>
 #include <QTreeWidget>
+#include <QObject>
+#include "w_add_empl.h"
 #include "structdep.h"
 #include "dataxml.h"
 #include "path.h"

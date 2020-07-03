@@ -1,6 +1,4 @@
 #include "dataxml.h"
-#include "mainwindow.h"
-#include "structdep.h"
 
 void DataXML::ListElements(QDomElement root, QVector<department*>& deps, QString tagname, QString attribute="")
 {

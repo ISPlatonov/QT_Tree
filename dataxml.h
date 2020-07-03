@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QtXml>
 #include "structdep.h"
+#include "mainwindow.h"
+#include "structdep.h"
 
 #include <QDebug>
 
