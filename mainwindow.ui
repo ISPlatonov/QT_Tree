@@ -151,6 +151,7 @@
      <string>Правка</string>
     </property>
     <addaction name="saveFile"/>
+    <addaction name="saveFileAs"/>
    </widget>
    <addaction name="fileAct"/>
    <addaction name="menu"/>
@@ -166,9 +167,14 @@
     <string>Создать</string>
    </property>
   </action>
-  <action name="saveFile">
+  <action name="saveFileAs">
    <property name="text">
     <string>Сохранить как...</string>
+   </property>
+  </action>
+  <action name="saveFile">
+   <property name="text">
+    <string>Сохранить</string>
    </property>
   </action>
  </widget>

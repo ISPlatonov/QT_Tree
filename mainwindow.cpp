@@ -118,6 +118,10 @@ void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->treeWidget->header()->setMinimumSectionSize(35);
+    ui->treeWidget->header()->setVisible(true);
+    ui->treeWidget->header()->setSectionResizeMode(QHeaderView::ResizeMode::Interactive);//?
 }
 
 MainWindow::~MainWindow()
@@ -129,9 +133,15 @@ MainWindow::~MainWindow()
 void MainWindow::on_openFile_triggered()
 {
     DataXML data;
-    Path path(this);
+    Path path_w(this);
+    if (!path_w.getPath().size())
+    {
+        ui->statusbar->showMessage("Не был выбран файл для открытия", 5000);
+        return;
+    }
+    path = path_w.getPath();
     clearTreeWidget(ui);
-    data.Open(path.getPath(), deps);
+    data.Open(path, deps);
     setTreeView(ui, deps);
 }
 
@@ -207,10 +217,29 @@ void MainWindow::on_createFile_triggered()
     ui->statusbar->showMessage("Такого действия пока нет", 5000);
 }
 
+void MainWindow::on_saveFileAs_triggered()
+{
+    auto dataxml = new DataXML;
+    auto path_w = QFileDialog::getSaveFileName(this, QFileDialog::tr("Сохранить файл"), "/newFile.xml", QFileDialog::tr("*.xml"));
+    if (!path_w.size())
+    {
+        ui->statusbar->showMessage("Файл не был сохранён", 5000);
+        return;
+    }
+    path = path_w;
+    dataxml->SaveAs(path, deps);
+    ui->statusbar->showMessage("Файл сохранён как новый", 5000);
+}
+
 void MainWindow::on_saveFile_triggered()
 {
-    ui->statusbar->showMessage("Такого действия пока нет", 5000);
+    if (!path.count())
+    {
+        ui->statusbar->showMessage("Файл ещё не создан", 5000);
+        on_saveFileAs_triggered();
+        return;
+    }
     auto dataxml = new DataXML;
-    auto path = QFileDialog::getSaveFileName(this, QFileDialog::tr("Save File"), "/newFile.xml", QFileDialog::tr("*.xml"));
     dataxml->SaveAs(path, deps);
+    ui->statusbar->showMessage("Файл сохранён", 5000);
 }

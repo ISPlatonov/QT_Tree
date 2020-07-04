@@ -16,10 +16,11 @@ public:
         TAG_NOT_STARTED
     };
 
-    class XMLException : public std::exception {
+    class XMLException : public std::exception
+    {
     public:
-        explicit XMLException( ErrorCode code ) : m_code( code ) { }
-        ~XMLException() throw() { }
+        explicit XMLException(ErrorCode code) : m_code(code) {}
+        ~XMLException() throw() {}
 
         const char* what() const throw() {
             switch( m_code ) {
@@ -36,18 +37,17 @@ public:
     };
 
 public:
-    explicit XMLBuilder( const QString& docName = "", bool instr = true );
+    explicit XMLBuilder(const QString& docName = "", bool instr = true);
 
-    XMLBuilder& begin( const QString& tagName ) throw( XMLException );
-    XMLBuilder& add( const QString& tagName, const QString& content ) throw( XMLException );
-    XMLBuilder& attr( const QString& attrName, const QString& content ) throw( XMLException );
+    XMLBuilder& begin(const QString& tagName) throw( XMLException);
+    XMLBuilder& add(const QString& tagName, const QString& content) throw(XMLException);
+    XMLBuilder& attr(const QString& attrName, const QString& content) throw(XMLException);
     XMLBuilder& end() throw( XMLException );
-    XMLBuilder& addStr(QString& str);
 
     QString getXML() const;
 
 private:
-    void appendElement( const QDomElement& element );
+    void appendElement(const QDomElement& element);
 
 private:
     QDomDocument m_doc;
