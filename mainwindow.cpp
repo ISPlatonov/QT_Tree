@@ -129,7 +129,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_openFile_triggered()
 {
     DataXML data;
-    Path path;
+    Path path(this);
     clearTreeWidget(ui);
     data.Open(path.getPath(), deps);
     setTreeView(ui, deps);
@@ -200,4 +200,17 @@ void MainWindow::on_but_del_empl_clicked()
     delEmpl(ui, ui->treeWidget->selectedItems()[0]->text(0), ui->treeWidget->selectedItems()[0]->text(1), ui->treeWidget->selectedItems()[0]->text(2));
     clearTreeWidget(ui);
     setTreeView(ui, deps);
+}
+
+void MainWindow::on_createFile_triggered()
+{
+    ui->statusbar->showMessage("Такого действия пока нет", 5000);
+}
+
+void MainWindow::on_saveFile_triggered()
+{
+    ui->statusbar->showMessage("Такого действия пока нет", 5000);
+    auto dataxml = new DataXML;
+    auto path = QFileDialog::getSaveFileName(this, QFileDialog::tr("Save File"), "/newFile.xml", QFileDialog::tr("*.xml"));
+    dataxml->SaveAs(path, deps);
 }

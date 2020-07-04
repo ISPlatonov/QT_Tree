@@ -51,5 +51,7 @@ private slots:
     void on_but_add_empl_clicked();
     void on_but_del_dep_clicked();
     void on_but_del_empl_clicked();
+    void on_createFile_triggered();
+    void on_saveFile_triggered();
 };
 #endif // MAINWINDOW_H

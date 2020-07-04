@@ -1,13 +1,13 @@
 #include "path.h" 
 
-Path::Path()
+Path::Path(QWidget* parent)
 {
-    setPath();
+    setPath(parent);
 }
 
-void Path::setPath()
+void Path::setPath(QWidget* parent)
 {
-    path = QFileDialog::getOpenFileName(nullptr, QFileDialog::tr("Open File"), "/", QFileDialog::tr("*.xml"));
+    path = QFileDialog::getOpenFileName(parent, QFileDialog::tr("Open File"), "/", QFileDialog::tr("*.xml"));
 }
 
 QString Path::getPath()

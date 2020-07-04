@@ -75,3 +75,43 @@ void DataXML::Open(QString path, QVector<department*>& deps)
 
     ListElements(root, deps, "department", "name");
 }
+
+void DataXML::SaveAs(QString path, QVector<department *> &deps)
+{
+    //Load the file
+    QFile file(path);
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate))
+    {
+        qDebug() << "Ошибка открытия файла";
+    }
+    QTextStream stream(&file);
+
+    file.reset();
+
+    QString xml;
+
+    xml = XMLBuilder().getXML() + "<departments>\n";
+    for (auto dep : deps)
+    {
+        xml = xml + "<department name=" + '"' + dep->name + '"' + ">\n" + "<employments>\n";
+        for (auto empl : dep->empls)
+        {
+            xml = xml + XMLBuilder("", false).
+                    begin("employment").
+                        add("surname", empl->surname).
+                        add("name", empl->name).
+                        add("middleName", empl->midname).
+                        add("function", empl->func).
+                        add("salary", empl->sal).
+                    end().getXML();
+
+        }
+        xml = xml + "</employments>\n</department>\n";
+    }
+
+    xml = xml + "</departments>\n";
+
+    stream.setCodec("UTF-8");
+    stream << xml.toUtf8();
+
+}

@@ -3,13 +3,14 @@
 
 #include <QString>
 #include <QFileDialog>
+#include <QWidget>
 
 class Path
 {
 public:
-    Path();
+    Path(QWidget* parent);
     QString getPath();
-    void setPath();
+    void setPath(QWidget* parent);
 private:
     QString path;
 };

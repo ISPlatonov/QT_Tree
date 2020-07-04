@@ -146,7 +146,14 @@
     <addaction name="openFile"/>
     <addaction name="createFile"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Правка</string>
+    </property>
+    <addaction name="saveFile"/>
+   </widget>
    <addaction name="fileAct"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="openFile">
@@ -157,6 +164,11 @@
   <action name="createFile">
    <property name="text">
     <string>Создать</string>
+   </property>
+  </action>
+  <action name="saveFile">
+   <property name="text">
+    <string>Сохранить как...</string>
    </property>
   </action>
  </widget>

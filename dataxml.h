@@ -9,6 +9,7 @@
 #include "structdep.h"
 #include "mainwindow.h"
 #include "structdep.h"
+#include "buildxml.h"
 
 #include <QDebug>
 
@@ -17,6 +18,7 @@ class DataXML
 public:
     void Open(QString path, QVector<department*>& deps);
     int countElements(QDomElement root, QString tagname);
+    void SaveAs(QString path, QVector<department*>& deps);
 private:
     void ListElements(QDomElement root, QVector<department*>& deps, QString tagname, QString attribute);
 };
