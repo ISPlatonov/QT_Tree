@@ -130,6 +130,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//open file
 void MainWindow::on_openFile_triggered()
 {
     DataXML data;
@@ -145,12 +146,14 @@ void MainWindow::on_openFile_triggered()
     setTreeView(ui, deps);
 }
 
+//add dep.
 void MainWindow::on_but_add_dep_clicked()
 {
     QString txt = ui->line_add_dep->text();
     addDepartment(deps, txt);
 }
 
+//add empl.
 void MainWindow::on_but_add_empl_clicked()
 {
     if (ui->treeWidget->selectedItems().count() == 0)
@@ -174,20 +177,13 @@ void MainWindow::on_but_add_empl_clicked()
         w_add_empl* add_w = new w_add_empl(dep, this);
         QObject::connect(add_w, SIGNAL(sendDep(department*)), this, SLOT(getChDep(department*)));
         add_w->setWindowFlag(Qt::WindowStaysOnTopHint);
+        add_w->setModal(true);
         add_w->show();
         add_w->exec();
     }
 }
 
-void MainWindow::getChDep(department* dep)
-{
-    for (auto d : deps)
-        if (d->name == dep->name)
-            *d = *dep;
-    clearTreeWidget(ui);
-    setTreeView(ui, deps);
-}
-
+//delete dep.
 void MainWindow::on_but_del_dep_clicked()
 {
     if (ui->treeWidget->selectedItems().count() == 0)
@@ -200,6 +196,7 @@ void MainWindow::on_but_del_dep_clicked()
     setTreeView(ui, deps);
 }
 
+//delete empl.
 void MainWindow::on_but_del_empl_clicked()
 {
     if (ui->treeWidget->selectedItems().count() == 0)
@@ -212,11 +209,20 @@ void MainWindow::on_but_del_empl_clicked()
     setTreeView(ui, deps);
 }
 
+//create new empty file
 void MainWindow::on_createFile_triggered()
 {
-    ui->statusbar->showMessage("Такого действия пока нет", 5000);
+    //ui->statusbar->showMessage("Такого действия пока нет", 5000);
+
+    createNewFileDialog* dialog = new createNewFileDialog(this);
+    QObject::connect(dialog, SIGNAL(accepted()), this, SLOT(getAcceptionCreateNewFile()));
+    dialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    dialog->setModal(true);
+    dialog->show();
+    dialog->exec();
 }
 
+//save the structure as another file
 void MainWindow::on_saveFileAs_triggered()
 {
     auto dataxml = new DataXML;
@@ -231,6 +237,7 @@ void MainWindow::on_saveFileAs_triggered()
     ui->statusbar->showMessage("Файл сохранён как новый", 5000);
 }
 
+//save changes in the file
 void MainWindow::on_saveFile_triggered()
 {
     if (!path.count())
@@ -242,4 +249,32 @@ void MainWindow::on_saveFile_triggered()
     auto dataxml = new DataXML;
     dataxml->SaveAs(path, deps);
     ui->statusbar->showMessage("Файл сохранён", 5000);
+}
+
+//slots for other windows
+
+//this slot gets shanged dep. (with new empl) from the other window
+void MainWindow::getChDep(department* dep)
+{
+    for (auto d : deps)
+        if (d->name == dep->name)
+            *d = *dep;
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}
+
+void MainWindow::getAcceptionCreateNewFile()
+{
+    auto dataxml = new DataXML;
+    auto path_w = QFileDialog::getSaveFileName(this, QFileDialog::tr("Создать файл"), "/newFile.xml", QFileDialog::tr("*.xml"));
+    if (!path_w.size())
+    {
+        ui->statusbar->showMessage("Файл не был создан", 5000);
+        return;
+    }
+    path = path_w;
+    deps.clear();
+    clearTreeWidget(ui);
+    dataxml->SaveAs(path, deps);
+    ui->statusbar->showMessage("Новый файл создан", 5000);
 }

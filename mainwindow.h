@@ -17,6 +17,7 @@
 #include "structdep.h"
 #include "dataxml.h"
 #include "path.h"
+#include "createnewfiledialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,6 +48,7 @@ private:
 
 public slots:
     void getChDep(department* dep);
+    void getAcceptionCreateNewFile();
 
 private slots:
     void on_openFile_triggered();

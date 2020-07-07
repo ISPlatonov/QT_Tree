@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     buildxml.cpp \
+    createnewfiledialog.cpp \
     dataxml.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     buildxml.h \
+    createnewfiledialog.h \
     dataxml.h \
     mainwindow.h \
     path.h \
@@ -32,6 +34,7 @@ HEADERS += \
     w_add_empl.h
 
 FORMS += \
+    createnewfiledialog.ui \
     mainwindow.ui \
     w_add_empl.ui
 
