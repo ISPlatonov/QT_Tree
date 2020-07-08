@@ -42,12 +42,14 @@ public:
     void addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func);
     void delDep(Ui::MainWindow *ui, QString name);
     void delEmpl(Ui::MainWindow *ui, QString name, QString func, QString salary);
+    void editDep(Ui::MainWindow *ui, QString name);
+    void editEmpl(Ui::MainWindow *ui, QString name, QString func, QString salary);
 
 private:
     QString path;
 
 public slots:
-    void getChDep(department* dep);
+    void getChDep();
     void getAcceptionCreateNewFile();
 
 private slots:
@@ -59,5 +61,7 @@ private slots:
     void on_createFile_triggered();
     void on_saveFileAs_triggered();
     void on_saveFile_triggered();
+    void on_but_edit_dep_clicked();
+    void on_but_edit_empl_clicked();
 };
 #endif // MAINWINDOW_H

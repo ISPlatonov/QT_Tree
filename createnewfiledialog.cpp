@@ -15,5 +15,5 @@ createNewFileDialog::~createNewFileDialog()
 
 void createNewFileDialog::on_buttonBox_accepted()
 {
-    emit accepted();
+    emit signalAccepted();
 }

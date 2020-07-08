@@ -3,6 +3,29 @@
 
 void w_add_empl::addEmpl(department* dep)
 {
+    bool f = true;
+    if (ui->line_edit_surname->text().isEmpty())
+    {
+        ui->line_edit_surname->setPlaceholderText("Введите фамилию");
+        f = false;
+    }
+    if (ui->line_edit_name->text().isEmpty())
+    {
+        ui->line_edit_name->setPlaceholderText("Введите имя");
+        f = false;
+    }
+    if (ui->line_edit_func->text().isEmpty())
+    {
+        ui->line_edit_func->setPlaceholderText("Введите должность");
+        f = false;
+    }
+    if (ui->line_edit_sal->text().isEmpty())
+    {
+        ui->line_edit_sal->setPlaceholderText("Введите зарплату");
+        f = false;
+    }
+    if (!f)
+        return;
     auto *empl = new struct empl;
     empl->surname = ui->line_edit_surname->text();
     empl->name = ui->line_edit_name->text();
@@ -11,7 +34,43 @@ void w_add_empl::addEmpl(department* dep)
     empl->func = ui->line_edit_func->text();
     dep->empls.push_back(empl);
 
-    emit sendDep(dep);
+    emit sendDep();
+
+    w_add_empl::~w_add_empl();
+}
+
+void w_add_empl::editEmpl(struct empl *empl)
+{
+    if (ui->line_edit_surname->text() != "")
+        empl->surname = ui->line_edit_surname->text();
+    if (ui->line_edit_name->text() != "")
+        empl->name = ui->line_edit_name->text();
+    if (ui->line_edit_midname->text() != "")
+        empl->midname = ui->line_edit_midname->text();
+    if (ui->line_edit_sal->text() != "")
+        empl->sal = ui->line_edit_sal->text();
+    if (ui->line_edit_func->text() != "")
+        empl->func = ui->line_edit_func->text();
+
+    emit sendDep();
+
+    w_add_empl::~w_add_empl();
+}
+
+w_add_empl::w_add_empl(struct empl* _empl, QWidget* parent) : QDialog(parent), ui(new Ui::w_add_empl)
+{
+    ui->setupUi(this);
+    auto* intVal = new QIntValidator;
+    ui->line_edit_sal->setValidator(intVal);
+    empl = _empl;
+    ui->line_edit_surname->setPlaceholderText(empl->surname);
+    ui->line_edit_name->setPlaceholderText(empl->name);
+    ui->line_edit_midname->setPlaceholderText(empl->midname);
+    ui->line_edit_func->setPlaceholderText(empl->func);
+    ui->line_edit_sal->setPlaceholderText(empl->sal);
+    ui->but_func->setText("Править");
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 w_add_empl::w_add_empl(department* _dep, QWidget *parent) : QDialog(parent), ui(new Ui::w_add_empl)
@@ -30,6 +89,8 @@ w_add_empl::~w_add_empl()
 
 void w_add_empl::on_but_func_clicked()
 {
-    addEmpl(dep);
-    w_add_empl::~w_add_empl();
+    if (empl == nullptr)
+        addEmpl(dep);
+    else
+        editEmpl(empl);
 }

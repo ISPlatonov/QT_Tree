@@ -20,7 +20,7 @@ private slots:
     void on_buttonBox_accepted();
 
 public: signals:
-    void accepted();
+    void signalAccepted();
 
 private:
     Ui::createNewFileDialog *ui;

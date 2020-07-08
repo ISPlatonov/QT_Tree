@@ -109,6 +109,66 @@ void MainWindow::delEmpl(Ui::MainWindow *ui, QString name, QString func, QString
             dep->empls.remove(i);
 }
 
+void MainWindow::editDep(Ui::MainWindow *ui, QString name)
+{
+    bool f = 0;
+    QString newName = ui->line_add_dep->text();
+    if (newName.isEmpty())
+    {
+        ui->statusbar->showMessage("Не написано новое название", 5000);
+        return;
+    }
+    for (uint16_t i = 0; i < deps.count(); ++i)
+    {
+        if (newName == deps[i]->name)
+        {
+            ui->statusbar->showMessage("Подразделение уже существует", 5000);
+            return;
+        }
+    }
+    for (uint16_t i = 0; i < deps.length(); ++i)
+        if (deps[i]->name == name)
+        {
+            f = true;
+            deps[i]->name = newName;
+            break;
+        }
+    if (!f)
+    {
+        ui->statusbar->showMessage("Подразделение не выбрано", 5000);
+        return;
+    }
+}
+
+void MainWindow::editEmpl(Ui::MainWindow *ui, QString name, QString func, QString salary)
+{
+    if (ui->treeWidget->selectedItems()[0]->parent() == nullptr)
+    {
+        ui->statusbar->showMessage("Выберите именно сотрудника", 5000);
+        return;
+    }
+    QString dep_name = ui->treeWidget->selectedItems()[0]->parent()->text(0);
+    department* dep = nullptr;
+    for (uint16_t i = 0; i < deps.length(); ++i)
+        if (deps[i]->name == dep_name)
+        {
+            dep = deps[i];
+            break;
+        }
+    if (dep == nullptr)
+    {
+        ui->statusbar->showMessage("Сотрудник не выбран", 5000);
+        return;
+    }
+    for (uint16_t i = 0; i < dep->empls.length(); ++i)
+        if (dep->empls[i]->fio() == name && dep->empls[i]->sal == salary && dep->empls[i]->func == func)
+        {
+            dep->empls[i]->name = name;
+            dep->empls[i]->sal = salary;
+            dep->empls[i]->func = func;
+        }
+}
+
 void MainWindow::setTreeView(Ui::MainWindow *ui, QVector<department*>& deps)
 {
     for (auto dep : deps)
@@ -175,7 +235,7 @@ void MainWindow::on_but_add_empl_clicked()
             return;
         }
         w_add_empl* add_w = new w_add_empl(dep, this);
-        QObject::connect(add_w, SIGNAL(sendDep(department*)), this, SLOT(getChDep(department*)));
+        QObject::connect(add_w, SIGNAL(sendDep()), this, SLOT(getChDep()));
         add_w->setWindowFlag(Qt::WindowStaysOnTopHint);
         add_w->setModal(true);
         add_w->show();
@@ -215,7 +275,7 @@ void MainWindow::on_createFile_triggered()
     //ui->statusbar->showMessage("Такого действия пока нет", 5000);
 
     createNewFileDialog* dialog = new createNewFileDialog(this);
-    QObject::connect(dialog, SIGNAL(accepted()), this, SLOT(getAcceptionCreateNewFile()));
+    QObject::connect(dialog, SIGNAL(signalAccepted()), this, SLOT(getAcceptionCreateNewFile()));
     dialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     dialog->setModal(true);
     dialog->show();
@@ -251,14 +311,77 @@ void MainWindow::on_saveFile_triggered()
     ui->statusbar->showMessage("Файл сохранён", 5000);
 }
 
+//edit chosen department
+void MainWindow::on_but_edit_dep_clicked()
+{
+    if (ui->treeWidget->selectedItems().count() == 0)
+    {
+        ui->statusbar->showMessage("Ничего не выбрано", 5000);
+        return;
+    }
+    editDep(ui, ui->treeWidget->selectedItems()[0]->text(0));
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}
+
+void MainWindow::on_but_edit_empl_clicked()
+{
+    if (ui->treeWidget->selectedItems()[0]->parent() == nullptr)
+    {
+        ui->statusbar->showMessage("Выберите именно сотрудника", 5000);
+        return;
+    }
+    QString dep_name = ui->treeWidget->selectedItems()[0]->parent()->text(0);
+    department* dep = nullptr;
+    for (uint16_t i = 0; i < deps.length(); ++i)
+        if (deps[i]->name == dep_name)
+        {
+            dep = deps[i];
+            break;
+        }
+    if (dep == nullptr)
+    {
+        ui->statusbar->showMessage("Сотрудник не выбран", 5000);
+        return;
+    }
+
+    QString fio = ui->treeWidget->selectedItems()[0]->text(0);
+    QString func = ui->treeWidget->selectedItems()[0]->text(1);
+    QString salary = ui->treeWidget->selectedItems()[0]->text(2);
+
+    QStringList fioList = fio.split(' ');
+
+    QString surname = fioList[0];
+    QString name = fioList[1];
+    QString midname = fioList[2];
+
+    empl* empl;
+
+    for (uint16_t i = 0; i < dep->empls.length(); ++i)
+        if (dep->empls[i]->fio() == fio && dep->empls[i]->sal == salary && dep->empls[i]->func == func)
+        {
+            empl = dep->empls[i];
+            empl->name = name;
+            empl->surname = surname;
+            empl->midname = midname;
+            empl->sal = salary;
+            empl->func = func;
+        }
+
+    w_add_empl* edit_w = new w_add_empl(empl, this);
+    QObject::connect(edit_w, SIGNAL(sendDep()), this, SLOT(getChDep()));
+    edit_w->setWindowFlag(Qt::WindowStaysOnTopHint);
+    edit_w->setModal(true);
+    edit_w->setWindowTitle("Править сотрудника");
+    edit_w->show();
+    edit_w->exec();
+}
+
 //slots for other windows
 
 //this slot gets shanged dep. (with new empl) from the other window
-void MainWindow::getChDep(department* dep)
+void MainWindow::getChDep()
 {
-    for (auto d : deps)
-        if (d->name == dep->name)
-            *d = *dep;
     clearTreeWidget(ui);
     setTreeView(ui, deps);
 }
@@ -278,3 +401,4 @@ void MainWindow::getAcceptionCreateNewFile()
     dataxml->SaveAs(path, deps);
     ui->statusbar->showMessage("Новый файл создан", 5000);
 }
+
