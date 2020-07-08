@@ -1,6 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::setPath(QString _path)
+{
+    path = _path;
+    fileName = path.split('/').last();
+    this->setWindowTitle("Список подразделений - " + fileName);
+}
+
 void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
     QTreeWidgetItem *tree = new QTreeWidgetItem();
@@ -200,7 +207,7 @@ void MainWindow::on_openFile_triggered()
         ui->statusbar->showMessage("Не был выбран файл для открытия", 5000);
         return;
     }
-    path = path_w.getPath();
+    this->setPath(path_w.getPath());
     clearTreeWidget(ui);
     data.Open(path, deps);
     setTreeView(ui, deps);
@@ -292,7 +299,7 @@ void MainWindow::on_saveFileAs_triggered()
         ui->statusbar->showMessage("Файл не был сохранён", 5000);
         return;
     }
-    path = path_w;
+    this->setPath(path_w);
     dataxml->SaveAs(path, deps);
     ui->statusbar->showMessage("Файл сохранён как новый", 5000);
 }
@@ -395,7 +402,7 @@ void MainWindow::getAcceptionCreateNewFile()
         ui->statusbar->showMessage("Файл не был создан", 5000);
         return;
     }
-    path = path_w;
+    this->setPath(path_w);
     deps.clear();
     clearTreeWidget(ui);
     dataxml->SaveAs(path, deps);

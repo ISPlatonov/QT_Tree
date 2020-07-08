@@ -47,6 +47,8 @@ public:
 
 private:
     QString path;
+    QString fileName;
+    void setPath(QString _path);
 
 public slots:
     void getChDep();
