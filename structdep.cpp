@@ -1,12 +1,34 @@
 #include "structdep.h"
 
-struct empls
+bool operator==(const empl& left, const empl& right)
 {
-    QVector<QString> names, sal, func;
-};
+    return (left.sal == right.sal &&
+            left.func == right.func &&
+            left.name == right.name &&
+            left.surname == right.surname &&
+            left.midname == right.midname);
+}
 
-struct department
+bool operator==(const department& left, const department& right)
 {
-    QString name, num, midsal;
-    empls empls;
-};
+    return (left.name == right.name && left.empls == right.empls);
+}
+
+empl& empl::operator=(const empl& right)
+{
+    this->name = right.name;
+    this->surname = right.surname;
+    this->midname = right.midname;
+    this->sal = right.sal;
+    this->func = right.func;
+
+    return *this;
+}
+
+department& department::operator=(const department& right)
+{
+    this->name = right.name;
+    this->empls = right.empls;
+
+    return *this;
+}

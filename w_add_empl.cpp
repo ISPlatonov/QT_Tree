@@ -32,15 +32,24 @@ void w_add_empl::addEmpl(department* dep)
     empl->midname = ui->line_edit_midname->text();
     empl->sal = ui->line_edit_sal->text();
     empl->func = ui->line_edit_func->text();
+
+    commit commit;
+    commit.setPrev(*dep);
+
     dep->empls.push_back(empl);
 
-    emit sendDep();
+    commit.setNew(*dep);
+
+    emit sendDep(commit);
 
     w_add_empl::~w_add_empl();
 }
 
-void w_add_empl::editEmpl(struct empl *empl)
+void w_add_empl::editEmpl(department* dep, struct empl *empl)
 {
+    commit commit;
+    commit.setPrev(*dep);
+
     if (ui->line_edit_surname->text() != "")
         empl->surname = ui->line_edit_surname->text();
     if (ui->line_edit_name->text() != "")
@@ -52,17 +61,20 @@ void w_add_empl::editEmpl(struct empl *empl)
     if (ui->line_edit_func->text() != "")
         empl->func = ui->line_edit_func->text();
 
-    emit sendDep();
+    commit.setNew(*dep);
+
+    emit sendDep(commit);
 
     w_add_empl::~w_add_empl();
 }
 
-w_add_empl::w_add_empl(struct empl* _empl, QWidget* parent) : QDialog(parent), ui(new Ui::w_add_empl)
+w_add_empl::w_add_empl(department* _dep, struct empl* _empl, QWidget* parent) : QDialog(parent), ui(new Ui::w_add_empl)
 {
     ui->setupUi(this);
     auto* intVal = new QIntValidator;
     ui->line_edit_sal->setValidator(intVal);
     empl = _empl;
+    dep = _dep;
     ui->line_edit_surname->setPlaceholderText(empl->surname);
     ui->line_edit_name->setPlaceholderText(empl->name);
     ui->line_edit_midname->setPlaceholderText(empl->midname);
@@ -92,5 +104,5 @@ void w_add_empl::on_but_func_clicked()
     if (empl == nullptr)
         addEmpl(dep);
     else
-        editEmpl(empl);
+        editEmpl(dep, empl);
 }

@@ -3,7 +3,8 @@
 
 #include <QVariant>
 #include <QVector>
-//#include <stdio.h>
+
+#include <QDebug>
 
 struct empl
 {
@@ -13,6 +14,7 @@ struct empl
         QString fio = surname + ' ' + name + ' ' + midname;
         return fio;
     }
+    empl& operator=(const empl& right);
 };
 
 struct department
@@ -40,6 +42,10 @@ struct department
         empls.clear();
         name = "";
     }
+    department& operator=(const department & right);
 };
+
+bool operator==(const empl& left, const empl& right);
+bool operator==(const department& left, const department& right);
 
 #endif // STRUCTDEP_H

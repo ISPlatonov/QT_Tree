@@ -46,15 +46,27 @@ void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
             ui->statusbar->showMessage("Подразделение уже существует", 5000);
             return;
         }
+
+    commit commit;
     auto *dep = new department;
+    commit.setPrev(*dep);
+
     dep->name = name;
     deps.push_back(dep);
+
+    commit.setNew(*dep);
+    history.addCommit(commit);
 
     showDepartment(ui, dep);
 }
 
 void MainWindow::addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func)
 {
+    qDebug() << "addChild";
+
+    commit commit;
+    commit.setPrev(*dep);
+
     empl *empl = new struct empl;
     empl->sal = sal;
     empl->func = func;
@@ -62,6 +74,9 @@ void MainWindow::addChild(department *dep, QString surname, QString name, QStrin
     empl->name = name;
     empl->midname = midname;
     dep->empls.push_back(empl);
+
+    commit.setNew(*dep);
+    history.addCommit(commit);
 
     //надо подумать с выводом
     auto item = ui->treeWidget->findItems(dep->name, Qt::MatchContains, 0)[0];
@@ -76,12 +91,16 @@ void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
 
 void MainWindow::delDep(Ui::MainWindow *ui, QString name)
 {
+    commit commit;
+
     bool f = 0;
     for (uint16_t i = 0; i < deps.length(); ++i)
         if (deps[i]->name == name)
         {
             f = true;
+            commit.setPrev(*deps[i]);
             deps.remove(i);
+            history.addCommit(commit);
             break;
         }
     if (!f)
@@ -111,9 +130,16 @@ void MainWindow::delEmpl(Ui::MainWindow *ui, QString name, QString func, QString
         ui->statusbar->showMessage("Сотрудник не выбран", 5000);
         return;
     }
+
+    commit commit;
+    commit.setPrev(*dep);
+
     for (uint16_t i = 0; i < dep->empls.length(); ++i)
         if (dep->empls[i]->fio() == name && dep->empls[i]->sal == salary && dep->empls[i]->func == func)
             dep->empls.remove(i);
+
+    commit.setNew(*dep);
+    history.addCommit(commit);
 }
 
 void MainWindow::editDep(Ui::MainWindow *ui, QString name)
@@ -136,8 +162,15 @@ void MainWindow::editDep(Ui::MainWindow *ui, QString name)
     for (uint16_t i = 0; i < deps.length(); ++i)
         if (deps[i]->name == name)
         {
+            commit commit;
+            commit.setPrev(*deps[i]);
+
             f = true;
             deps[i]->name = newName;
+
+            commit.setNew(*deps[i]);
+            history.addCommit(commit);
+
             break;
         }
     if (!f)
@@ -167,12 +200,19 @@ void MainWindow::editEmpl(Ui::MainWindow *ui, QString name, QString func, QStrin
         ui->statusbar->showMessage("Сотрудник не выбран", 5000);
         return;
     }
+
+    commit commit;
+    commit.setPrev(*dep);
+
     for (uint16_t i = 0; i < dep->empls.length(); ++i)
         if (dep->empls[i]->fio() == name && dep->empls[i]->sal == salary && dep->empls[i]->func == func)
         {
             dep->empls[i]->name = name;
             dep->empls[i]->sal = salary;
             dep->empls[i]->func = func;
+
+            commit.setNew(*dep);
+            history.addCommit(commit);
         }
 }
 
@@ -242,7 +282,7 @@ void MainWindow::on_but_add_empl_clicked()
             return;
         }
         w_add_empl* add_w = new w_add_empl(dep, this);
-        QObject::connect(add_w, SIGNAL(sendDep()), this, SLOT(getChDep()));
+        QObject::connect(add_w, SIGNAL(sendDep(commit&)), this, SLOT(getChDep(commit&)));
         add_w->setWindowFlag(Qt::WindowStaysOnTopHint);
         add_w->setModal(true);
         add_w->show();
@@ -375,8 +415,8 @@ void MainWindow::on_but_edit_empl_clicked()
             empl->func = func;
         }
 
-    w_add_empl* edit_w = new w_add_empl(empl, this);
-    QObject::connect(edit_w, SIGNAL(sendDep()), this, SLOT(getChDep()));
+    w_add_empl* edit_w = new w_add_empl(dep, empl, this);
+    QObject::connect(edit_w, SIGNAL(sendDep(commit&)), this, SLOT(getChDep(commit&)));
     edit_w->setWindowFlag(Qt::WindowStaysOnTopHint);
     edit_w->setModal(true);
     edit_w->setWindowTitle("Править сотрудника");
@@ -387,10 +427,11 @@ void MainWindow::on_but_edit_empl_clicked()
 //slots for other windows
 
 //this slot gets shanged dep. (with new empl) from the other window
-void MainWindow::getChDep()
+void MainWindow::getChDep(commit& commit)
 {
     clearTreeWidget(ui);
     setTreeView(ui, deps);
+    history.addCommit(commit);
 }
 
 void MainWindow::getAcceptionCreateNewFile()
@@ -409,3 +450,9 @@ void MainWindow::getAcceptionCreateNewFile()
     ui->statusbar->showMessage("Новый файл создан", 5000);
 }
 
+void MainWindow::on_pullBack_triggered()
+{
+    history.pullBack(deps);
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}

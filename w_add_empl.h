@@ -6,6 +6,7 @@
 #include <QValidator>
 #include <QMessageBox>
 #include "structdep.h"
+#include "history.h"
 
 #include <QDebug>
 
@@ -19,10 +20,10 @@ class w_add_empl : public QDialog
 
 public:
     explicit w_add_empl(department* _dep, QWidget *parent = nullptr);
-    explicit w_add_empl(empl* empl, QWidget *parent = nullptr);
+    explicit w_add_empl(department* dep, empl* empl, QWidget *parent = nullptr);
     ~w_add_empl();
     void addEmpl(department* dep);
-    void editEmpl(struct empl* empl);
+    void editEmpl(department* dep, struct empl* empl);
 
 private slots:
     void on_but_func_clicked();
@@ -32,7 +33,7 @@ private:
     department* dep;
     empl* empl = nullptr;
 public: signals:
-    void sendDep();
+    void sendDep(commit& commit);
 };
 
 #endif // W_ADD_EMPL_H

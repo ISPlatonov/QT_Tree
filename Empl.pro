@@ -19,15 +19,18 @@ SOURCES += \
     buildxml.cpp \
     createnewfiledialog.cpp \
     dataxml.cpp \
+    history.cpp \
     main.cpp \
     mainwindow.cpp \
     path.cpp \
+    structdep.cpp \
     w_add_empl.cpp
 
 HEADERS += \
     buildxml.h \
     createnewfiledialog.h \
     dataxml.h \
+    history.h \
     mainwindow.h \
     path.h \
     structdep.h \

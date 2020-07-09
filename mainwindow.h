@@ -18,6 +18,7 @@
 #include "dataxml.h"
 #include "path.h"
 #include "createnewfiledialog.h"
+#include "history.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -49,9 +50,10 @@ private:
     QString path;
     QString fileName;
     void setPath(QString _path);
+    History history;
 
 public slots:
-    void getChDep();
+    void getChDep(commit&);
     void getAcceptionCreateNewFile();
 
 private slots:
@@ -65,5 +67,6 @@ private slots:
     void on_saveFile_triggered();
     void on_but_edit_dep_clicked();
     void on_but_edit_empl_clicked();
+    void on_pullBack_triggered();
 };
 #endif // MAINWINDOW_H

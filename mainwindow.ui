@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>357</height>
+    <width>643</width>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,11 +51,17 @@
         </item>
         <item>
          <widget class="QTreeWidget" name="treeWidget">
+          <property name="minimumSize">
+           <size>
+            <width>425</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="columnCount">
            <number>3</number>
           </property>
           <attribute name="headerVisible">
-           <bool>true</bool>
+           <bool>false</bool>
           </attribute>
           <attribute name="headerCascadingSectionResizes">
            <bool>true</bool>
@@ -69,6 +75,9 @@
           <column>
            <property name="text">
             <string>Название</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignLeading|AlignVCenter</set>
            </property>
           </column>
           <column>
@@ -230,7 +239,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>590</width>
+     <width>643</width>
      <height>20</height>
     </rect>
    </property>
@@ -247,6 +256,7 @@
     </property>
     <addaction name="saveFile"/>
     <addaction name="saveFileAs"/>
+    <addaction name="pullBack"/>
    </widget>
    <addaction name="fileAct"/>
    <addaction name="menu"/>
@@ -270,6 +280,11 @@
   <action name="saveFile">
    <property name="text">
     <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="pullBack">
+   <property name="text">
+    <string>Отменить</string>
    </property>
   </action>
  </widget>
