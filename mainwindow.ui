@@ -249,14 +249,15 @@
     </property>
     <addaction name="openFile"/>
     <addaction name="createFile"/>
+    <addaction name="saveFile"/>
+    <addaction name="saveFileAs"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>Правка</string>
     </property>
-    <addaction name="saveFile"/>
-    <addaction name="saveFileAs"/>
     <addaction name="pullBack"/>
+    <addaction name="returnBack"/>
    </widget>
    <addaction name="fileAct"/>
    <addaction name="menu"/>
@@ -266,10 +267,16 @@
    <property name="text">
     <string>Открыть</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="createFile">
    <property name="text">
     <string>Создать</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="saveFileAs">
@@ -281,10 +288,24 @@
    <property name="text">
     <string>Сохранить</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="pullBack">
    <property name="text">
     <string>Отменить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="returnBack">
+   <property name="text">
+    <string>Вернуть</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
    </property>
   </action>
  </widget>

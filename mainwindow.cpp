@@ -55,9 +55,10 @@ void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
     deps.push_back(dep);
 
     commit.setNew(*dep);
-    history.addCommit(commit);
+    //history.addCommit(commit);
 
-    showDepartment(ui, dep);
+    //showDepartment(ui, dep);
+    getChDep(commit);
 }
 
 void MainWindow::addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func)
@@ -76,11 +77,13 @@ void MainWindow::addChild(department *dep, QString surname, QString name, QStrin
     dep->empls.push_back(empl);
 
     commit.setNew(*dep);
-    history.addCommit(commit);
+    //history.addCommit(commit);
+
+    getChDep(commit);
 
     //надо подумать с выводом
-    auto item = ui->treeWidget->findItems(dep->name, Qt::MatchContains, 0)[0];
-    showChild(item, empl);
+    //auto item = ui->treeWidget->findItems(dep->name, Qt::MatchContains, 0)[0];
+    //showChild(item, empl);
 }
 
 void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
@@ -107,7 +110,8 @@ void MainWindow::delDep(Ui::MainWindow *ui, QString name)
             f = true;
             commit.setPrev(*deps[i]);
             deps.remove(i);
-            history.addCommit(commit);
+            //history.addCommit(commit);
+            getChDep(commit);
             break;
         }
     if (!f)
@@ -146,7 +150,8 @@ void MainWindow::delEmpl(Ui::MainWindow *ui, QString name, QString func, QString
             dep->empls.remove(i);
 
     commit.setNew(*dep);
-    history.addCommit(commit);
+    //history.addCommit(commit);
+    getChDep(commit);
 }
 
 void MainWindow::editDep(Ui::MainWindow *ui, QString name)
@@ -176,7 +181,9 @@ void MainWindow::editDep(Ui::MainWindow *ui, QString name)
             deps[i]->name = newName;
 
             commit.setNew(*deps[i]);
-            history.addCommit(commit);
+            //history.addCommit(commit);
+
+            getChDep(commit);
 
             break;
         }
@@ -219,7 +226,9 @@ void MainWindow::editEmpl(Ui::MainWindow *ui, QString name, QString func, QStrin
             dep->empls[i]->func = func;
 
             commit.setNew(*dep);
-            history.addCommit(commit);
+            //history.addCommit(commit);
+
+            getChDep(commit);
         }
 }
 
@@ -309,8 +318,8 @@ void MainWindow::on_but_del_dep_clicked()
         return;
     }
     delDep(ui, ui->treeWidget->selectedItems()[0]->text(0));
-    clearTreeWidget(ui);
-    setTreeView(ui, deps);
+    //clearTreeWidget(ui);
+    //setTreeView(ui, deps);
 }
 
 //delete empl.
@@ -322,8 +331,8 @@ void MainWindow::on_but_del_empl_clicked()
         return;
     }
     delEmpl(ui, ui->treeWidget->selectedItems()[0]->text(0), ui->treeWidget->selectedItems()[0]->text(1), ui->treeWidget->selectedItems()[0]->text(2));
-    clearTreeWidget(ui);
-    setTreeView(ui, deps);
+    //clearTreeWidget(ui);
+    //setTreeView(ui, deps);
 }
 
 //create new empty file
@@ -366,6 +375,13 @@ void MainWindow::on_saveFile_triggered()
     auto dataxml = new DataXML;
     dataxml->SaveAs(path, deps);
     ui->statusbar->showMessage("Файл сохранён", 5000);
+
+    auto txt = this->windowTitle();
+    if (txt.back() == '*')
+    {
+        txt.remove(txt.back());
+        this->setWindowTitle(txt);
+    }
 }
 
 //edit chosen department
@@ -377,8 +393,8 @@ void MainWindow::on_but_edit_dep_clicked()
         return;
     }
     editDep(ui, ui->treeWidget->selectedItems()[0]->text(0));
-    clearTreeWidget(ui);
-    setTreeView(ui, deps);
+    //clearTreeWidget(ui);
+    //setTreeView(ui, deps);
 }
 
 void MainWindow::on_but_edit_empl_clicked()
@@ -442,9 +458,13 @@ void MainWindow::getChDep(commit& commit)
     clearTreeWidget(ui);
     setTreeView(ui, deps);
     history.addCommit(commit);
-    qDebug() << commit.getPrev()->empls.length() << commit.getNew()->empls.length();
+    //qDebug() << commit.getPrev()->empls.length() << commit.getNew()->empls.length();
+    auto txt = this->windowTitle();
+    if (txt.back() != '*')
+        this->setWindowTitle(txt + "*");
 }
 
+//just opens dialog wdw to create a new .xml file
 void MainWindow::getAcceptionCreateNewFile()
 {
     auto dataxml = new DataXML;
@@ -461,9 +481,27 @@ void MainWindow::getAcceptionCreateNewFile()
     ui->statusbar->showMessage("Новый файл создан", 5000);
 }
 
+//returns the structure and sets treeWidget as before the last commit
 void MainWindow::on_pullBack_triggered()
 {
+    if (!history.historyLength())
+    {
+        ui->statusbar->showMessage("Нечего отменять", 5000);
+        return;
+    }
     history.pullBack(deps);
+    clearTreeWidget(ui);
+    setTreeView(ui, deps);
+}
+
+void MainWindow::on_returnBack_triggered()
+{
+    if (!history.pulledLength())
+    {
+        ui->statusbar->showMessage("Нечего возвращать", 5000);
+        return;
+    }
+    history.returnBack(deps);
     clearTreeWidget(ui);
     setTreeView(ui, deps);
 }

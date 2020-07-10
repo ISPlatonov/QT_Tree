@@ -27,9 +27,13 @@ public:
 
     void addCommit(commit& commit);
     void pullBack(QVector<department*>& deps);
+    void returnBack(QVector<department*>& deps);
+    uint16_t historyLength();
+    uint16_t pulledLength();
 
 private:
     QVector<commit> history;
+    QVector<commit> pulled;
 };
 
 #endif // HISTORY_H

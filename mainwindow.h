@@ -68,5 +68,6 @@ private slots:
     void on_but_edit_dep_clicked();
     void on_but_edit_empl_clicked();
     void on_pullBack_triggered();
+    void on_returnBack_triggered();
 };
 #endif // MAINWINDOW_H
