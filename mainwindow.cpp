@@ -86,7 +86,14 @@ void MainWindow::addChild(department *dep, QString surname, QString name, QStrin
 void MainWindow::clearTreeWidget(Ui::MainWindow *ui)
 {
     while (ui->treeWidget->topLevelItemCount() > 0)
+    {
+        auto dep = ui->treeWidget->topLevelItem(0);
+        while (dep->childCount() > 0)
+        {
+            dep->takeChild(0);
+        }
         ui->treeWidget->takeTopLevelItem(0);
+    }
 }
 
 void MainWindow::delDep(Ui::MainWindow *ui, QString name)
@@ -233,7 +240,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow()
 {
+    history.~History();
     deps.~QVector();
+    path.~QString();
+    fileName.~QString();
     delete ui;
 }
 
@@ -432,6 +442,7 @@ void MainWindow::getChDep(commit& commit)
     clearTreeWidget(ui);
     setTreeView(ui, deps);
     history.addCommit(commit);
+    qDebug() << commit.getPrev()->empls.length() << commit.getNew()->empls.length();
 }
 
 void MainWindow::getAcceptionCreateNewFile()

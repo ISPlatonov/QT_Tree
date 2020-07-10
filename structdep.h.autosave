@@ -8,7 +8,7 @@
 
 struct empl
 {
-    //~empl();
+    ~empl();
 
     QString name, surname, midname, sal, func;
     QString fio()
@@ -17,17 +17,15 @@ struct empl
         return fio;
     }
     empl& operator=(const empl& right);
+    
 };
-
-//typedef QVector<empl*> empls;
 
 struct department
 {
-    //~department();
+    ~department();
+
     QString name;
     QVector<empl*> empls;
-
-    void newPtrEmplVector(const QVector<empl*>& v);
     int num()
     {
         return empls.count();
@@ -54,6 +52,5 @@ struct department
 
 bool operator==(const empl& left, const empl& right);
 bool operator==(const department& left, const department& right);
-bool operator==(const QVector<empl*>& left, const QVector<empl*>& right);
 
 #endif // STRUCTDEP_H

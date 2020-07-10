@@ -21,8 +21,9 @@ void History::pullBack(QVector<department*>& deps)
         for (uint16_t i = 0; i < deps.length(); ++i)
             if (*deps[i] == *lastCommit.getNew())
             {
-                qDebug() << "eqv.";
+                qDebug() << deps.length();
                 deps.remove(i);
+                qDebug() << deps.length();
             }
     }
 
@@ -34,12 +35,13 @@ void History::pullBack(QVector<department*>& deps)
 
     else
     {
-        qDebug() << "changing";
+        qDebug() << "changing" << lastCommit.getNew()->empls.length() << lastCommit.getPrev()->empls.length();
         for (uint16_t i = 0; i < deps.length(); ++i)
             if (*deps[i] == *lastCommit.getNew())
             {
-                qDebug() << "eqv.";
+                qDebug() << deps[i]->empls.length();
                 *deps[i] = *lastCommit.getPrev();
+                qDebug() << deps[i]->empls.length();
             }
     }
 
@@ -65,7 +67,6 @@ department* commit::getPrev()
 void commit::setNew(const department& newDep)
 {
     *this->newDep = newDep;
-    qDebug() << newDep.name << this->getNew()->name;
 }
 
 void commit::setPrev(const department& prevDep)

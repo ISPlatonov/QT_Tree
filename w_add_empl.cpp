@@ -39,6 +39,7 @@ void w_add_empl::addEmpl(department* dep)
     dep->empls.push_back(empl);
 
     commit.setNew(*dep);
+    qDebug() << commit.getPrev()->empls.length() << commit.getNew()->empls.length();
 
     emit sendDep(commit);
 

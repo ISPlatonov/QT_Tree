@@ -10,6 +10,7 @@ class commit
 {
 public:
     commit();
+
     void setPrev(const department& prevDep);
     void setNew(const department& newDep);
     department* getPrev();
