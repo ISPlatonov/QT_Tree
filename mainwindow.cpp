@@ -492,6 +492,9 @@ void MainWindow::on_pullBack_triggered()
     history.pullBack(deps);
     clearTreeWidget(ui);
     setTreeView(ui, deps);
+    auto txt = this->windowTitle();
+    if (txt.back() != '*')
+        this->setWindowTitle(txt + "*");
 }
 
 void MainWindow::on_returnBack_triggered()

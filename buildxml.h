@@ -39,10 +39,10 @@ public:
 public:
     explicit XMLBuilder(const QString& docName = "", bool instr = true);
 
-    XMLBuilder& begin(const QString& tagName) throw( XMLException);
+    XMLBuilder& begin(const QString& tagName) throw(XMLException);
     XMLBuilder& add(const QString& tagName, const QString& content) throw(XMLException);
     XMLBuilder& attr(const QString& attrName, const QString& content) throw(XMLException);
-    XMLBuilder& end() throw( XMLException );
+    XMLBuilder& end() throw(XMLException);
 
     QString getXML() const;
 

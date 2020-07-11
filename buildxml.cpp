@@ -9,7 +9,7 @@ XMLBuilder::XMLBuilder(const QString& docName, bool instr) : m_doc(docName)
 
 XMLBuilder& XMLBuilder::begin(const QString& tagName) throw(XMLException)
 {
-    if(tagName.isEmpty())
+    if (tagName.isEmpty())
         throw XMLException(EMPTY_TAG_NAME);
 
     m_currentElement = m_doc.createElement(tagName);
@@ -22,7 +22,7 @@ XMLBuilder& XMLBuilder::begin(const QString& tagName) throw(XMLException)
 
 XMLBuilder& XMLBuilder::end() throw(XMLException)
 {
-    if( m_elementsStack.isEmpty() )
+    if (m_elementsStack.isEmpty())
         throw XMLException(TAG_NOT_STARTED);
 
     m_currentElement = m_elementsStack.pop();
@@ -32,10 +32,10 @@ XMLBuilder& XMLBuilder::end() throw(XMLException)
 
 XMLBuilder& XMLBuilder::attr(const QString& attrName, const QString& content) throw(XMLException)
 {
-    if(attrName.isEmpty())
-        throw XMLException( EMPTY_ATTR_NAME );
+    if (attrName.isEmpty())
+        throw XMLException(EMPTY_ATTR_NAME);
 
-    if(m_currentElement.isNull())
+    if (m_currentElement.isNull())
         throw XMLException(COULD_NOT_ADD_ATTR);
 
     m_currentElement.setAttribute(attrName, content);
@@ -44,8 +44,8 @@ XMLBuilder& XMLBuilder::attr(const QString& attrName, const QString& content) th
 }
 
 XMLBuilder& XMLBuilder::add(const QString& tagName, const QString& content) throw(XMLException) {
-    if(tagName.isEmpty())
-        throw XMLException( EMPTY_TAG_NAME );
+    if (tagName.isEmpty())
+        throw XMLException(EMPTY_TAG_NAME);
 
     m_currentElement = m_doc.createElement( tagName );
     appendElement( m_currentElement );
@@ -62,7 +62,7 @@ QString XMLBuilder::getXML() const {
 
 void XMLBuilder::appendElement(const QDomElement& element)
 {
-    if(m_elementsStack.isEmpty())
+    if (m_elementsStack.isEmpty())
         m_doc.appendChild(element);
     else
     {

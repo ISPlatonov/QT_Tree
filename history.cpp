@@ -9,8 +9,8 @@ void History::addCommit(commit& commit)
 {
     pulled.clear();
     history.push_back(commit);
-    qDebug() << history.length();
-    qDebug() << commit.getNew()->name << commit.getPrev()->name;
+    //qDebug() << history.length();
+    //qDebug() << commit.getNew()->name << commit.getPrev()->name;
 }
 
 void History::pullBack(QVector<department*>& deps)
@@ -54,31 +54,31 @@ void History::returnBack(QVector<department *> &deps)
     auto lastCommit = pulled.last();
     if (lastCommit.getPrev()->name == "")
     {
-        qDebug() << "adding";
+        //qDebug() << "adding";
         deps.push_back(lastCommit.getNew());
     }
 
     else if (lastCommit.getNew()->name == "")
     {
-        qDebug() << "deleting";
+        //qDebug() << "deleting";
         for (uint16_t i = 0; i < deps.length(); ++i)
             if (*deps[i] == *lastCommit.getPrev())
             {
-                qDebug() << deps.length();
+                //qDebug() << deps.length();
                 deps.remove(i);
-                qDebug() << deps.length();
+                //qDebug() << deps.length();
             }
     }
 
     else
     {
-        qDebug() << "changing" << lastCommit.getNew()->empls.length() << lastCommit.getPrev()->empls.length();
+        //qDebug() << "changing" << lastCommit.getNew()->empls.length() << lastCommit.getPrev()->empls.length();
         for (uint16_t i = 0; i < deps.length(); ++i)
             if (*deps[i] == *lastCommit.getPrev())
             {
-                qDebug() << deps[i]->empls.length();
+                //qDebug() << deps[i]->empls.length();
                 *deps[i] = *lastCommit.getNew();
-                qDebug() << deps[i]->empls.length();
+                //qDebug() << deps[i]->empls.length();
             }
     }
     history.push_back(lastCommit);
