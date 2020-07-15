@@ -33,7 +33,7 @@ void w_add_empl::addEmpl(department* dep)
     //департамент dep)
     //нельзя удалять empl тут - это не промежуточная,
     //а окончательно использующаяся структура
-    auto *empl = new struct empl;
+    auto *empl = new class empl;
     empl->surname = ui->line_edit_surname->text();
     empl->name = ui->line_edit_name->text();
     empl->midname = ui->line_edit_midname->text();
@@ -53,7 +53,7 @@ void w_add_empl::addEmpl(department* dep)
     w_add_empl::~w_add_empl();
 }
 
-void w_add_empl::editEmpl(department* dep, struct empl *empl)
+void w_add_empl::editEmpl(department* dep, class empl *empl)
 {
     commit commit;
     commit.setPrev(*dep);
@@ -76,7 +76,7 @@ void w_add_empl::editEmpl(department* dep, struct empl *empl)
     w_add_empl::~w_add_empl();
 }
 
-w_add_empl::w_add_empl(department* _dep, struct empl* _empl, QWidget* parent) : QDialog(parent), ui(new Ui::w_add_empl)
+w_add_empl::w_add_empl(department* _dep, class empl* _empl, QWidget* parent) : QDialog(parent), ui(new Ui::w_add_empl)
 {
     ui->setupUi(this);
     auto* intVal = new QIntValidator;

@@ -9,12 +9,11 @@
 //struct - это тот же class, у которого
 //все члены public
 //struct точно так же наследуются и т.п.,
-//там те же правила - можно наследовать
-//их хоть друг от друга, - это лишь вопрос
-//стиля/вкусовщины
+//это лишь вопрос стиля (?)
 
-struct empl
+class empl
 {
+public:
     QString name, surname, midname, sal, func;
     QString fio()
     {
@@ -25,8 +24,9 @@ struct empl
     void del();
 };
 
-struct department
+class department
 {
+public:
     QString name;
     QVector<empl*> empls;
 

@@ -23,7 +23,7 @@ public:
     explicit w_add_empl(department* dep, empl* empl, QWidget *parent = nullptr);
     ~w_add_empl();
     void addEmpl(department* dep);
-    void editEmpl(department* dep, struct empl* empl);
+    void editEmpl(department* dep, class empl* empl);
 
 private slots:
     void on_but_func_clicked();
