@@ -11,6 +11,7 @@ class commit
 public:
     commit();
 
+    void del();
     void setPrev(const department& prevDep);
     void setNew(const department& newDep);
     department* getPrev();
@@ -24,6 +25,7 @@ class History
 {
 public:
     History();
+    ~History();
 
     void addCommit(commit& commit);
     void pullBack(QVector<department*>& deps);
@@ -34,6 +36,8 @@ public:
 private:
     QVector<commit> history;
     QVector<commit> pulled;
+
+    void delPulled();
 };
 
 #endif // HISTORY_H

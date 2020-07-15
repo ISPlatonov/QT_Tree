@@ -6,10 +6,15 @@
 
 #include <QDebug>
 
+//struct - это тот же class, у которого
+//все члены public
+//struct точно так же наследуются и т.п.,
+//там те же правила - можно наследовать
+//их хоть друг от друга, - это лишь вопрос
+//стиля/вкусовщины
+
 struct empl
 {
-    //~empl();
-
     QString name, surname, midname, sal, func;
     QString fio()
     {
@@ -17,13 +22,11 @@ struct empl
         return fio;
     }
     empl& operator=(const empl& right);
+    void del();
 };
-
-//typedef QVector<empl*> empls;
 
 struct department
 {
-    //~department();
     QString name;
     QVector<empl*> empls;
 
@@ -50,6 +53,7 @@ struct department
         name = "";
     }
     department& operator=(const department & right);
+    void del();
 };
 
 bool operator==(const empl& left, const empl& right);

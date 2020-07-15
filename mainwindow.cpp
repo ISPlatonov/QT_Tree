@@ -10,6 +10,8 @@ void MainWindow::setPath(QString _path)
 
 void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 {
+    if (empl == nullptr)
+        return;
     QTreeWidgetItem *tree = new QTreeWidgetItem();
 
     tree->setData(0, 0, empl->fio());
@@ -21,6 +23,9 @@ void MainWindow::showChild(QTreeWidgetItem *par, empl* empl)
 
 void MainWindow::showDepartment(Ui::MainWindow *ui, department* dep)
 {
+    if (dep == nullptr)
+        return;
+
     QTreeWidgetItem *tree = new QTreeWidgetItem(ui->treeWidget);
 
     tree->setData(0, 0, dep->name);
@@ -64,6 +69,9 @@ void MainWindow::addDepartment(QVector<department *> &deps, QString& name)
 void MainWindow::addChild(department *dep, QString surname, QString name, QString midname, QString sal, QString func)
 {
     qDebug() << "addChild";
+
+    if (dep == nullptr)
+        return;
 
     commit commit;
     commit.setPrev(*dep);
@@ -250,6 +258,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     history.~History();
+    for (auto dep : deps)
+        dep->del();
     deps.~QVector();
     path.~QString();
     fileName.~QString();

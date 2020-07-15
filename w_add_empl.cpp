@@ -26,6 +26,13 @@ void w_add_empl::addEmpl(department* dep)
     }
     if (!f)
         return;
+
+    //здесь выделяется память для новой структуры,
+    //создаётся указатель, который записывается в
+    //вектор deps (через указатель на конкретный
+    //департамент dep)
+    //нельзя удалять empl тут - это не промежуточная,
+    //а окончательно использующаяся структура
     auto *empl = new struct empl;
     empl->surname = ui->line_edit_surname->text();
     empl->name = ui->line_edit_name->text();
@@ -97,6 +104,9 @@ w_add_empl::w_add_empl(department* _dep, QWidget *parent) : QDialog(parent), ui(
 
 w_add_empl::~w_add_empl()
 {
+    /*if (this->empl != nullptr)
+        this->empl->del();*/
+
     delete ui;
 }
 

@@ -95,3 +95,21 @@ void department::newPtrEmplVector(const QVector<empl*>& v)
     qDebug() << "eqv!!!";
     return 1;
 }*/
+
+void empl::del()
+{
+    name.~QString();
+    surname.~QString();
+    midname.~QString();
+    sal.~QString();
+    func.~QString();
+    delete this;
+}
+
+void department::del()
+{
+    name.~QString();
+    for (auto empl : empls)
+        empl->del();
+    delete this;
+}

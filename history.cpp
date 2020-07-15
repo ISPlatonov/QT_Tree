@@ -1,15 +1,10 @@
 #include "history.h"
 
-History::History()
-{
-
-}
-
 void History::addCommit(commit& commit)
 {
     pulled.clear();
     history.push_back(commit);
-    //qDebug() << history.length();
+    qDebug() << history.length();
     //qDebug() << commit.getNew()->name << commit.getPrev()->name;
 }
 
@@ -91,6 +86,13 @@ commit::commit()
     prevDep = new department;
 }
 
+void commit::del()
+{
+    this->newDep->del();
+    this->prevDep->del();
+    delete this;
+}
+
 department* commit::getNew()
 {
     return this->newDep;
@@ -119,4 +121,24 @@ uint16_t History::historyLength()
 uint16_t History::pulledLength()
 {
     return pulled.length();
+}
+
+History::History()
+{
+
+}
+
+History::~History()
+{
+    for (auto commit : history)
+        commit.del();
+    for (auto commit : pulled)
+        commit.del();
+    //delete  this;
+}
+
+void History::delPulled()
+{
+    for (auto commit : pulled)
+        commit.del();
 }
